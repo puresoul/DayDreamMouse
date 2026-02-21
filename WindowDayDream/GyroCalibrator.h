@@ -18,12 +18,11 @@ private:
 		bool isCalibrated = false;
 	} m_calibration;
 
-	// Kalibrace pro orientaci (neutralnÌ poloha)
 	struct OrientationCalibration
 	{
-		float neutralX = 0.0f;  // NeutralnÌ pitch (0 stupnu vp¯ed)
-		float neutralY = 0.0f;  // NeutralnÌ roll (0 stupnu vlevo/vpravo)
-		float neutralZ = 0.0f;  // NeutralnÌ yaw
+		float neutralX = 0.0f;  
+		float neutralY = 0.0f;  
+		float neutralZ = 0.0f;  
 		bool isCalibratedOrientation = false;
 	} m_orientationCalibration;
 
@@ -53,22 +52,19 @@ public:
 		{
 			m_gyroSamples.push_back(gyroData);
 			
-			// Tisk prub
 			int percent = (m_gyroSamples.size() * 100) / SAMPLES_TO_COLLECT;
 			std::cout << "\rDrift Calibration: " << percent << "% (" << m_gyroSamples.size() << "/" << SAMPLES_TO_COLLECT << ")";
 			std::cout.flush();
 
-			return false;  // Kalibrace nenÌ hotova
+			return false; 
 		}
 		else
 		{
-			// Kalibrace je hotova
 			CompleteCalibration();
 			return true;
 		}
 	}
 
-	// SpustÌ kalibraci orientace - uûivatel smÏ¯uje ovladaË p¯Ìmo veda (forward)
 	void StartOrientationCalibration()
 	{
 		m_orientationSamples.clear();
@@ -84,27 +80,24 @@ public:
 		{
 			m_orientationSamples.push_back(orientation);
 			
-			// Tisk prub
+
 			int percent = (m_orientationSamples.size() * 100) / ORIENTATION_SAMPLES;
 			std::cout << "\rOrientation Calibration: " << percent << "% (" << m_orientationSamples.size() << "/" << ORIENTATION_SAMPLES << ")";
 			std::cout.flush();
 
-			return false;  // Kalibrace nenÌ hotova
+			return false; 
 		}
 		else
 		{
-			// Kalibrace je hotova
 			CompleteOrientationCalibration();
 			return true;
 		}
 	}
 
-	// Dokonci kalibraci a vypocita offsety
 	void CompleteCalibration()
 	{
 		if (m_gyroSamples.size() == 0) return;
 
-		// Vypocet prumeru
 		float sumX = 0, sumY = 0, sumZ = 0;
 		for (const auto& sample : m_gyroSamples)
 		{
@@ -125,12 +118,11 @@ public:
 		std::cout << "=========================================\n" << std::endl;
 	}
 
-	// Dokonci orientacni kalibraci
+
 	void CompleteOrientationCalibration()
 	{
 		if (m_orientationSamples.size() == 0) return;
 
-		// Vypocet prumeru orientace
 		float sumX = 0, sumY = 0, sumZ = 0;
 		for (const auto& sample : m_orientationSamples)
 		{
@@ -151,7 +143,6 @@ public:
 		std::cout << "========================================\n" << std::endl;
 	}
 
-	// Vraù kalibrovane gyro data
 	TripleXYZ<float> GetCalibratedGyro(const TripleXYZ<float>& rawGyro) const
 	{
 		if (!m_calibration.isCalibrated)
@@ -166,7 +157,7 @@ public:
 		};
 	}
 
-	// Vraù kalibrovanou orientaci (relativnÌ v˘Ëi vp¯ed)
+
 	TripleXYZ<float> GetCalibratedOrientation(const TripleXYZ<float>& rawOri) const
 	{
 		if (!m_orientationCalibration.isCalibratedOrientation)
@@ -174,7 +165,7 @@ public:
 			return rawOri;
 		}
 
-		// VypoËti relativnÌ orientaci
+
 		return {
 			rawOri.x - m_orientationCalibration.neutralX,
 			rawOri.y - m_orientationCalibration.neutralY,
@@ -182,19 +173,19 @@ public:
 		};
 	}
 
-	// Kontrluje, zda je gyroskop zkalibrov·n
+
 	bool IsGyroCalibrated() const
 	{
 		return m_calibration.isCalibrated;
 	}
 
-	// Kontroluje, zda je orientace zkalibrov·na
+
 	bool IsOrientationCalibrated() const
 	{
 		return m_orientationCalibration.isCalibratedOrientation;
 	}
 
-	// Reset vsech kalibrac
+
 	void ResetAll()
 	{
 		m_calibration.isCalibrated = false;
@@ -206,7 +197,7 @@ public:
 		std::cout << "All calibrations reset!" << std::endl;
 	}
 
-	// Vrati statistiku kalibrace
+
 	void PrintCalibrationStatus() const
 	{
 		std::cout << "\n========== CALIBRATION STATUS ==========" << std::endl;

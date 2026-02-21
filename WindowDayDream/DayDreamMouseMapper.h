@@ -159,7 +159,6 @@ public:
 		}
 	}
 
-	// Zpracovani tlacítek DayDream
 	void ProcessButtons(const DataButtons& buttons)
 	{
 		if (!m_mouseController) return;

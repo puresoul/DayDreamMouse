@@ -15,31 +15,16 @@ using namespace std;
 
 #pragma comment(lib, "SetupAPI")
 #pragma comment(lib, "BluetoothApis.lib")
-#pragma comment(lib, "user32.lib")  // Linkování s user32.lib pro mouse input
-
-// Globalni kontrolery pro OpenVR a ostatní moduly
-struct _Controller
-{
-	double X = 0;
-	double Y = 0;
-	double Z = 0;
-	double Yaw = 0;
-	double Pitch = 0;
-	double Roll = 0;
-};
-
-_Controller MyCtrl[1] = {};
-int32_t Active = 0;
+#pragma comment(lib, "user32.lib")  
 
 DDConnector connector;
-// Globální connector pro OpenVR driver
 DDConnector* g_connector = &connector;
 
-// Globální mouse controller
+
 MouseController* g_mouseController = nullptr;
 DayDreamMouseMapper* g_mouseMapper = nullptr;
 
-// Posledný stav trackpadu pro detekci zmÃ©n
+
 struct TrackpadState
 {
 	float lastX = 0.5f;
@@ -48,29 +33,23 @@ struct TrackpadState
 	bool lastClicking = false;
 } g_trackpadState;
 
-// Callback pro zpracování DayDream dat a myši
 void ProcessDayDreamData()
 {
 	const DataDevice& device = TFirstDevice::data;
 
 	if (g_mouseMapper)
 	{
-		// Trackpad: normalizace z [0, 1] na [-1, 1]
 		float trackpadX = (device.xTouch > 0.01f && device.xTouch < 0.99f) ? device.xTouch : 0.5f;
 		float trackpadY = (device.yTouch > 0.01f && device.yTouch < 0.99f) ? device.yTouch : 0.5f;
 
-		// Detekce dotyku a kliku
 		bool isTouching = (device.xTouch > 0.1f && device.xTouch < 0.9f) ||
 		                   (device.yTouch > 0.1f && device.yTouch < 0.9f);
 		bool isClicking = device.b.bTouch;
 
-		// Zpracování trackpadu
 		g_mouseMapper->ProcessTrackpad(trackpadX, trackpadY, isTouching, isClicking);
 
-		// Zpracování tlačítek
 		g_mouseMapper->ProcessButtons(device.b);
 
-		// Zpracování IMU (gyroskop + orientace pro pohyb kurzoru)
 		g_mouseMapper->ProcessIMU(device.ori, device.acc, device.gyr);
 	}
 }
@@ -82,7 +61,7 @@ int main(int argc, char* argv[]){
 	
 	try
 	{
-		// Inicializace Mouse Controlleru
+	
 		g_mouseController = new MouseController();
 		g_mouseMapper = new DayDreamMouseMapper(g_mouseController);
 
@@ -92,7 +71,7 @@ int main(int argc, char* argv[]){
 		// g_mouseMapper->SetInvertGyroY(true);   // Invert horizontal axis (roll)
 		// =========================================
 
-		// Tisk napovedy
+
 		DayDreamMouseMapper::PrintHelp();
 
 		// ===== DIAGNOSTIC INFORMATION =====
@@ -138,16 +117,15 @@ int main(int argc, char* argv[]){
 		std::cout << "========================================" << std::endl << std::endl;
 		
 		
-		// Tisk napovedy pro kalibraci
+
 		std::cout << "To start gyro calibration: HOLD MENU button for 2 seconds!" << std::endl << std::endl;
 		
 		// Keep the application running and listen for events
 		while (true)
 		{
-			// Zpracování DayDream dat a ovládání myši
+		
 			ProcessDayDreamData();
-
-			Sleep(10);  // Aktualizace 20x za sekundu (50ms interval)
+			Sleep(10);  
 		}
 	}
 	catch (const std::exception& e)

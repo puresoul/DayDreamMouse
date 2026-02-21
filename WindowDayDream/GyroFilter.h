@@ -8,7 +8,6 @@
 class GyroFilter
 {
 private:
-	// Exponenciální moving average filtr
 	struct FilterState
 	{
 		float x = 0.0f;
@@ -43,7 +42,6 @@ public:
 
 	~GyroFilter() {}
 
-	// Aplikuj exponenciální moving average filtr
 	TripleXYZ<float> ApplyEMA(const TripleXYZ<float>& raw)
 	{
 		m_filtered.x = (m_alpha * raw.x) + ((1.0f - m_alpha) * m_filtered.x);

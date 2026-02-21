@@ -76,9 +76,9 @@ struct DataDevice
 	void init()
 	{
 		constexpr float M_PI = 3.14159265358979323846f;
-		constexpr float oriScale = 2.0f * M_PI / 4095.0f;      // Orientace [rad]
-		constexpr float accScale = 8.0f * 9.8f / 4095.0f;       // Akcelerace [m/s²]
-		constexpr float gyroScale = (2048.0f / 180.0f) * M_PI / 4095.0f; // Gyroskop [rad/s]
+		constexpr float oriScale = 2.0f * M_PI / 4095.0f;      // [rad]
+		constexpr float accScale = 8.0f * 9.8f / 4095.0f;       // [m/s²]
+		constexpr float gyroScale = (2048.0f / 180.0f) * M_PI / 4095.0f; // [rad/s]
 
 		// ===== ORIENTACE (ORI) - 13 bitů na souřadnici =====
 		// xOri: Bajty 1-3, bity [1:0, 2:*, 3:7]
