@@ -180,7 +180,7 @@ private:
 		return Temp;
 	}
 
-	template<class T, typename  TDevID::have_CM_DRP<T> = 0>
+	template<class T, typename  TDevID::have_CM_DRP<T> = nullptr>
 	void initField(DeviceProperties Properties[], CString * Temp = nullptr, DEVNODE * dn = nullptr)
 	{
 		int yy = T::ID;
@@ -189,7 +189,7 @@ private:
 		_tcscpy(Properties[T::ID].PropertyValue, *Temp);
 	}
 
-	template<class T, typename  TDevID::no_have_CM_DRP<T> = 0>
+	template<class T, typename  TDevID::no_have_CM_DRP<T> = nullptr>
 	void initField(DeviceProperties Properties[], CString * Temp = nullptr, DEVNODE * dn = nullptr)
 	{
 		_tcscpy(Properties[T::ID].Property, T::FRIENDLY_NAME);

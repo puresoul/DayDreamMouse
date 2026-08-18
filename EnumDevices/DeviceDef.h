@@ -68,11 +68,11 @@ struct TDevice_ID
 		const T CM_DRP;
 	};	
 
-	template <class U, typename have_CM_DRP<U> = 0>
+	template <class U, typename have_CM_DRP<U> = nullptr>
 	inline static constexpr TDevice_ID<T>::bDev* baseFactory() {
 		return new TDevice_ID<T>::bDev(U::FRIENDLY_NAME, U::ID,U::CM_DRP);
 	}
-	template <class U, typename no_have_CM_DRP<U> = 0>
+	template <class U, typename no_have_CM_DRP<U> = nullptr>
 	inline static constexpr TDevice_ID<T>::bDev* baseFactory() {
 		return new TDevice_ID<T>::bDev(U::FRIENDLY_NAME, U::ID);
 	}

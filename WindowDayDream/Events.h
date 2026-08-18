@@ -41,9 +41,11 @@ DEFINE_ENUM(scenarioN, 0, NO_ACTION, CALIBRATE_HORISONTAL, CALIBRATE_ROTATE, CAL
 
 DEFINE_ENUM(calibrateN, 0, NO_CALIBRATE, CALIBRATE_BYFILE, CALIBRATE_INSESSION);
 
+template <class T> struct getTDeviceN;
+
 // Minimal event system for console application
 template<class TData>
-struct Events 
+struct Events
 {	
 	static constexpr int N = getTDeviceN<TData>::N;
 	
