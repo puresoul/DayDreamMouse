@@ -26,13 +26,14 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Build
-      # PlatformToolset is overridden to v143 because hosted runners ship only VS 2022;
-      # local builds keep using the toolset pinned in the project files.
+      # PlatformToolset is overridden to v145 because the windows-latest image
+      # (VS 2026) ships MFC libraries only for its default toolset; local builds
+      # keep using the toolset pinned in the project files.
       run: >-
         msbuild ${{ env.SOLUTION_FILE_PATH }} /m
         /p:Configuration=${{ env.BUILD_CONFIGURATION }}
         /p:Platform=${{ env.BUILD_PLATFORM }}
-        /p:PlatformToolset=v143
+        /p:PlatformToolset=v145
         /p:WindowsTargetPlatformVersion=10.0
 
     - name: Upload artifacts
